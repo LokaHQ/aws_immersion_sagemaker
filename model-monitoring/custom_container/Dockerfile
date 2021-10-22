@@ -29,9 +29,8 @@ RUN pip3 install pip --upgrade
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONIOENCODING=UTF-8 LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH="/opt/program:${PATH}"
 
-COPY requirements.txt /requirements.txt
-RUN pip3 install -r /requirements.txt && \
-    rm /requirements.txt
+COPY requirements.txt /.
+RUN pip3 install -r requirements.txt && rm requirements.txt
 
 # Create directory for models
 RUN mkdir -p /opt/ml/models
