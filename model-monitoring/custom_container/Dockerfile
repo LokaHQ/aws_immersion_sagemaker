@@ -32,10 +32,6 @@ ENV PATH="/opt/program:${PATH}"
 COPY requirements.txt /.
 RUN pip3 install -r requirements.txt && rm requirements.txt
 
-# Create directory for models
-RUN mkdir -p /opt/ml/models
-RUN chmod +rwx /opt/ml/models
-
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
@@ -44,4 +40,9 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 COPY . /opt/program
 WORKDIR /opt/program
 
+# Make entrypoint for sagemaker executable
+RUN chmod +x /opt/program/serve
+
 EXPOSE 8080
+
+ENTRYPOINT [ "python", "serve" ]
