@@ -4,7 +4,9 @@ import sklearn
 from joblib import load
 
 app = Flask(__name__)
-model = load(os.environ["MODEL_PATH"])
+prefix = "/opt/ml/"
+model_path = os.path.join(prefix, "model.joblib")
+# model = load(model_path)
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -14,8 +16,7 @@ def ping():
     status = 200
     return Response(response="\n", status=status, mimetype="application/json")
 
-@app.route("/invocations", methods=["POST"])
-def predict(body):
-    vector = body
-    pred = model.predict_proba(vector)[0][0]
-    return {"pred": pred}
+# @app.route("/invocations", methods=["POST"])
+# def predict(body):
+#     pred = model.predict_proba(body)[0][0]
+#     return {"pred": pred}
