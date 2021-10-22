@@ -1,12 +1,11 @@
-import os
-from flask import Flask, Response
-import sklearn
+import numpy as np
+from flask import request, Flask, Response
 from joblib import load
 
 app = Flask(__name__)
 prefix = "/opt/ml/"
-model_path = os.path.join(prefix, "model.joblib")
-# model = load(model_path)
+model_path = "sklearn_model.joblib"
+model = load(model_path)
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -16,7 +15,9 @@ def ping():
     status = 200
     return Response(response="\n", status=status, mimetype="application/json")
 
-# @app.route("/invocations", methods=["POST"])
-# def predict(body):
-#     pred = model.predict_proba(body)[0][0]
-#     return {"pred": pred}
+@app.route("/invocations", methods=["POST"])
+def predict():
+    data = request.data.decode("utf-8")
+    data = np.array([float(i) for i in data.split(",")]).reshape(1, -1)
+    pred = model.predict_proba(data)[0][1]
+    return {"pred": pred}
