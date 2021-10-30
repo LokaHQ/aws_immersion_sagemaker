@@ -1,5 +1,5 @@
-FROM ubuntu:18.04
-
+# To avoid pull rate limit (1 per second for unauthenticated users)
+FROM public.ecr.aws/ubuntu/ubuntu:18.04
 # Install python and other scikit-learn runtime dependencies
 # Dependency list from http://scikit-learn.org/stable/developers/advanced_installation.html#installing-build-dependencies
 RUN apt-get update && \
